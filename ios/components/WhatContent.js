@@ -16,19 +16,26 @@ class What extends Component {
   render(){
     return(
       <View style={styles.contentBox}>
-        <TouchableHighlight
-        onPress={this.playRecording}
-        underlayColor='rgba(151, 10, 45, .2)'>
-          <View style={styles.speakerBox}>
-            <Image style={styles.speakerImg} source={require('../../assets/img/speaker.png')}/>
-          </View>
-        </TouchableHighlight>
-        <TouchableHighlight
-        onPress={this.playRecording}
-        underlayColor='rgba(151, 10, 45, .2)'>
-          <View style={styles.buttonBox}>
-          </View>
-        </TouchableHighlight>
+        <View>
+          <TouchableHighlight
+          onPress={this.playRecording}
+          underlayColor='rgba(151, 10, 45, .2)'
+          style={styles.speakerButtonBox}>
+            <View style={styles.speakerBox}>
+              <Image style={styles.speakerImg} source={require('../../assets/img/speaker.png')}/>
+            </View>
+          </TouchableHighlight>
+        </View>
+        <View>
+          <TouchableHighlight
+          onPress={this.playRecording}
+          underlayColor='rgba(151, 10, 45, .2)'
+          style={styles.recordButton}>
+            <View style={styles.recordButtonBox}>
+              <Text style={styles.recordButtonText}>Record</Text>
+            </View>
+          </TouchableHighlight>
+        </View>
       </View>
     )
   }
@@ -57,11 +64,31 @@ var styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  buttonBox: {
+  speakerButtonBox: {
+    height: 200,
+    width: 200,
+    borderRadius: 100,
+    alignItems: 'center',
+    justifyContent: "center"
+  },
+  recordButtonText: {
+    color: '#003366',
+    fontFamily: 'Avenir-MediumOblique',
+    fontSize: 38
+  },
+  recordButtonBox: {
     height: 70,
     width: 220,
     borderWidth: 2,
     borderColor: 'green',
+    marginBottom: 30,
+    alignItems: 'center',
+    justifyContent: "center"
+  },
+  recordButton: {
+    height: 70,
+    width: 220,
+    marginBottom: 30,
   }
 });
 
