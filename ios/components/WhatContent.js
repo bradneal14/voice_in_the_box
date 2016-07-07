@@ -3,14 +3,31 @@ import {
   StyleSheet,
   Text,
   View,
-
+  Image,
+  TouchableHighlight
 } from 'react-native';
 
+var RecordButton = require("./RecordButton.js")
+
 class What extends Component {
+  playRecording(){
+    console.log("playing recording");
+  }
   render(){
     return(
       <View style={styles.contentBox}>
         <Text>What Content</Text>
+        <TouchableHighlight
+        onPress={this.playRecording}>
+          <View>
+            <Image style={styles.speakerImg} source={require('../../assets/img/speaker.png')}/>
+          </View>
+        </TouchableHighlight>
+        <TouchableHighlight
+        onPress={this.playRecording}>
+          <View>
+          </View>
+        </TouchableHighlight>
       </View>
     )
   }
@@ -25,6 +42,10 @@ var styles = StyleSheet.create({
     flex: 5,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  speakerImg: {
+    height: 180,
+    width: 180,
   }
 });
 
