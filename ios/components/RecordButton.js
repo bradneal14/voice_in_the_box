@@ -9,13 +9,13 @@ import {
 class RecordButton extends Component {
   render(){
     return (
-
+      <Text>Hello</Text>
     )
   }
 }
 
 var styles = StyleSheet.create({
-  
+
 })
 
 RecordButton.external = true;
