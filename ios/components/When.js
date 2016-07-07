@@ -9,7 +9,7 @@ class When extends Component {
   render(){
     return (
       <View style={styles.contentBox}>
-        <Text>When</Text>
+        <Text>When Content</Text>
       </View>
     )
   }

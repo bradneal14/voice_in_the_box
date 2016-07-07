@@ -9,7 +9,7 @@ class What extends Component {
   render(){
     return(
       <View style={styles.contentBox}>
-        <Text>What</Text>
+        <Text>What Content</Text>
       </View>
     )
   }
