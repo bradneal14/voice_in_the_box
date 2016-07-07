@@ -33,6 +33,7 @@ class What extends Component {
           style={styles.recordButton}>
             <View style={styles.recordButtonBox}>
               <Text style={styles.recordButtonText}>Record</Text>
+              <View style={styles.recordButtonSymbol}/>
             </View>
           </TouchableHighlight>
         </View>
@@ -83,12 +84,22 @@ var styles = StyleSheet.create({
     borderColor: 'green',
     marginBottom: 30,
     alignItems: 'center',
-    justifyContent: "center"
+    justifyContent: "center",
+    flexDirection: 'row',
+    backgroundColor: 'grey',
+    borderRadius: 10
   },
   recordButton: {
     height: 70,
     width: 220,
     marginBottom: 30,
+  },
+  recordButtonSymbol:{
+    height: 30,
+    width: 30,
+    borderRadius: 15,
+    backgroundColor: '#ff3333',
+    margin: 18
   }
 });
 
