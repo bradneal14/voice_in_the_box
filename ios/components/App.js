@@ -10,22 +10,23 @@ var When = require("./When.js");
 var What = require("./What.js");
 
 class App extends Component {
-  constructor(props){
-    super(props);
-    this.state = {tab: "when"};
+  constructor(){
+    super();
+    this.state = {tab: "pizza"};
   }
   toggleDisplay(){
-    if (this.state.tab === "when"){
-      this.setState({ tab: "what" });
-    } else {
-      this.setState({ tab: "when" });
-    }
+    console.log(this.state);
+    // if (this.state.tab === "when"){
+    //   this.setState({tab: "what" });
+    // } else {
+    //   this.setState({tab: "when" });
+    // }
   }
   render() {
-    let display = this.state.tab==="when" ? <When/> : <What/>;
+    let display = this.state.tab==="when" ? <What/> : <When/>;
     return (
       <View style={styles.fullBack}>
-        <Navbar tab={this.state.tab} />
+        <Navbar onClick={this.toggleDisplay.bind(thisx)} tab={this.state.tab} />
         {display}
       </View>
     );

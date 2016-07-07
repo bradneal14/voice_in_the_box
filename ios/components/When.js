@@ -8,10 +8,21 @@ import {
 class When extends Component {
   render(){
     return (
-      <Text>When</Text>
+      <View style={styles.contentBox}>
+        <Text>When</Text>
+      </View>
     )
   }
 }
+
+var styles = StyleSheet.create({
+  contentBox: {
+    backgroundColor: 'orange',
+    borderWidth: 1,
+    borderColor: 'blue',
+    flex: 5,
+  }
+});
 
 When.external === true;
 module.exports = When;

@@ -8,11 +8,22 @@ import {
 class What extends Component {
   render(){
     return(
-      <Text>What</Text>
+      <View style={styles.contentBox}>
+        <Text>What</Text>
+      </View>
     )
   }
 
 }
+
+var styles = StyleSheet.create({
+  contentBox: {
+    backgroundColor: 'yellow',
+    borderWidth: 1,
+    borderColor: 'green',
+    flex: 5,
+  }
+});
 
 What.external = true;
 module.exports = What;
