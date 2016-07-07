@@ -2,27 +2,31 @@ import React, {Component} from 'react';
 import {
   StyleSheet,
   Text,
-  View
+  View,
+
 } from 'react-native';
 
-class When extends Component {
+class What extends Component {
   render(){
-    return (
+    return(
       <View style={styles.contentBox}>
-        <Text>When Content</Text>
+        <Text>What Content</Text>
       </View>
     )
   }
+
 }
 
 var styles = StyleSheet.create({
   contentBox: {
-    backgroundColor: 'orange',
+    backgroundColor: 'yellow',
     borderWidth: 1,
-    borderColor: 'blue',
+    borderColor: 'green',
     flex: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
   }
 });
 
-When.external === true;
-module.exports = When;
+What.external = true;
+module.exports = What;

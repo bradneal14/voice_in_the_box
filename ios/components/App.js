@@ -6,13 +6,14 @@ import {
 } from 'react-native';
 
 var Navbar = require("./Navbar.js");
-var When = require("./When.js");
-var What = require("./What.js");
+var When = require("./WhenContent.js");
+var What = require("./WhatContent.js");
+var Help = require('./Help.js');
 
 class App extends Component {
   constructor(props){
     super(props);
-    this.state = {tab: "When"};
+    this.state = {tab: "when"};
   }
   toggleContent(){
     if (this.state.tab === "when"){

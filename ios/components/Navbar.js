@@ -12,18 +12,15 @@ var WhatButton = require("./WhatButton.js");
 
 
 class Navbar extends Component{
-  // constructor(props){
-  //   super(props);
-  //   this.state = {tab: this.props.tab}
-  //   console.log(this.state, "STATE init");
-  //   console.log(this.props, "PROPS init");
-  // }
 
   render(){
     var display = this.props.tab==="when" ? <WhenButton/> : <WhatButton/>
     return (
       <View style={styles.navigationBox}>
-        <TouchableHighlight onPress={this.props.onClick.bind(this)}>
+          <TouchableHighlight
+            onPress={this.props.onClick.bind(this)}
+            underlayColor='rgba(151, 10, 45, .0)'
+          >
           <View>
             {display}
           </View>
