@@ -25,6 +25,7 @@ class What extends Component {
       stoppedPlaying: false,
       playing: false,
       finished: false,
+      done: false,
     };
 
   }
@@ -44,6 +45,7 @@ class What extends Component {
     };
     AudioRecorder.onFinished = (data) => {
       this.setState({finished: data.finished});
+      this.setState({done: true});
       console.log(`Finished recording: ${data.finished}`);
     };
   }
@@ -68,7 +70,7 @@ class What extends Component {
   _record() {
     AudioRecorder.startRecording();
     this.setState({recording: true, playing: false});
-    console.log(this.state)
+    console.log(AudioUtils.DocumentDirectoryPath)
   }
 
  _play() {
@@ -80,14 +82,30 @@ class What extends Component {
     this.setState({playing: true});
     setTimeout( () => { this.setState({playing: false});}, this.state.currentTime * 1000);
   }
+  test(){
+    this.setState({stoppedRecording: false})
+    console.log("testing");
+  }
 
   render(){
     if (this.state.recording){
       var speakerImage = <Image style={styles.speakerImg} source={require('../../assets/img/input-speaker.png')}/>
     } else if (this.state.playing){
       var speakerImage = <Image style={styles.speakerImg} source={require('../../assets/img/output-speaker.png')}/>
+    } else if (this.state.stoppedRecording){
+      var speakerImage = <Image style={styles.speakerImg} source={require('../../assets/img/has-speaker.png')}/>
     } else {
       var speakerImage = <Image style={styles.speakerImg} source={require('../../assets/img/speaker.png')}/>
+    }
+    if (this.state.stoppedRecording){
+      var deleteButton = <TouchableHighlight
+        onPress={this.test.bind(this)}
+        underlayColor='rgba(151, 10, 45, .2)'
+        style={styles.deleteButton}>
+          <Text style={styles.deleteText}>DELETE RECORDING</Text>
+        </TouchableHighlight>
+    } else {
+      var deleteButton = <Text style={styles.hidden}>DELETE RECORDING</Text>
     }
     return(
       <View style={styles.contentBox}>
@@ -100,6 +118,9 @@ class What extends Component {
               {speakerImage}
             </View>
           </TouchableHighlight>
+          <View>
+            {deleteButton}
+          </View>
         </View>
         <View>
           <TouchableHighlight
@@ -108,7 +129,7 @@ class What extends Component {
           underlayColor='rgba(151, 10, 45, .2)'
           style={styles.recordButton}>
             <View style={styles.recordButtonBox}>
-              <Text style={styles.recordButtonText}>Record!</Text>
+              <Text style={styles.recordButtonText}>Record</Text>
               <View style={styles.recordButtonSymbol}/>
             </View>
           </TouchableHighlight>
@@ -191,6 +212,21 @@ var styles = StyleSheet.create({
     borderRadius: 15,
     backgroundColor: '#ff3333',
     margin: 13
+  },
+  deleteButton: {
+    alignSelf: 'center',
+    justifyContent: 'flex-end',
+    padding: 5
+  },
+  deleteText: {
+    fontFamily: 'AvenirNext-Italic',
+    fontSize: 20,
+  },
+  hidden: {
+    color: 'rgba(151, 10, 45, 0)',
+    fontFamily: 'AvenirNext-Italic',
+    fontSize: 20,
+    padding: 5
   }
 });
 
