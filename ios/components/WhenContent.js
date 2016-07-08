@@ -65,9 +65,7 @@ class When extends Component {
         </View>
 
         <View style={styles.midContent}>
-            <Text>{(Dimensions.get("window").width) / 7}</Text>
-            <Text>{this.state.saved.toString()}</Text>
-            <Text>{this.state.chosenDate.toString()}</Text>
+            <Text>Hello</Text>
         </View>
 
 
@@ -104,13 +102,13 @@ var styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'pink',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'flex-start'
   },
   midContent: {
-    flex: 0,
+    flex: 1,
     borderWidth: 2,
     borderColor: 'green',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   bottomContent: {
     flex: 2,

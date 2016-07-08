@@ -109,7 +109,7 @@ class What extends Component {
     }
     return(
       <View style={styles.contentBox}>
-        <View>
+        <View style={styles.topContent}>
           <TouchableHighlight
           onPress={this._play.bind(this)}
           underlayColor='rgba(151, 10, 45, .2)'
@@ -122,7 +122,10 @@ class What extends Component {
             {deleteButton}
           </View>
         </View>
-        <View>
+        <View style={styles.midContent}>
+          <Text>This is middle content</Text>
+        </View>
+        <View style={styles.bottomContent}>
           <TouchableHighlight
           onPressIn={this._record.bind(this)}
           onPressOut={this._stop.bind(this)}
@@ -142,47 +145,25 @@ class What extends Component {
 
 var styles = StyleSheet.create({
   contentBox: {
-    borderWidth: 1,
+    borderWidth:1,
     borderTopColor: 'green',
     flex: 5,
-    alignItems: 'center',
-    justifyContent: 'space-around',
   },
   speakerImg: {
     height: 160,
     width: 160,
   },
-  topContent: {
-    flex: 3,
-    borderWidth: 2,
-    borderColor: 'pink'
-  },
-  midContent: {
-    flex: 1,
-    borderWidth: 2,
-    borderColor: 'blue'
-  },
-  bottomContent: {
-    flex: 2,
-    borderWidth: 2,
-    borderColor: 'purple'
-  },
+
   speakerBox: {
-    height: 200,
-    width: 200,
-    borderRadius: 100,
+    height: 220,
+    width: 220,
+    borderRadius: 110,
     borderColor: 'grey',
-    borderWidth: 2,
+    borderWidth:2,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  speakerButtonBox: {
-    height: 200,
-    width: 200,
-    borderRadius: 100,
-    alignItems: 'center',
-    justifyContent: "center"
-  },
+
   recordButtonText: {
     color: '#003366',
     fontFamily: 'Avenir-MediumOblique',
@@ -192,9 +173,9 @@ var styles = StyleSheet.create({
   recordButtonBox: {
     height: 70,
     width: 220,
-    borderWidth: 2,
+    borderWidth:2,
     borderColor: 'green',
-    marginBottom: 30,
+    marginBottom: 0,
     alignItems: 'center',
     justifyContent: "center",
     flexDirection: 'row',
@@ -204,7 +185,7 @@ var styles = StyleSheet.create({
   recordButton: {
     height: 70,
     width: 220,
-    marginBottom: 30,
+    marginBottom: 0,
   },
   recordButtonSymbol:{
     height: 30,
@@ -227,7 +208,27 @@ var styles = StyleSheet.create({
     fontFamily: 'AvenirNext-Italic',
     fontSize: 20,
     padding: 5
-  }
+  },
+  topContent: {
+    flex: 3,
+    borderWidth: 1,
+    borderColor: 'pink',
+    alignItems: 'center',
+    justifyContent: 'flex-start'
+  },
+  midContent: {
+    flex: 1,
+    borderWidth: 2,
+    borderColor: 'green',
+    alignItems: 'center'
+  },
+  bottomContent: {
+    flex: 2,
+    borderWidth: 3,
+    borderColor: 'white',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
 });
 
 What.external = true;
