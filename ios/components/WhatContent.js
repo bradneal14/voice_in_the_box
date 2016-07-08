@@ -8,13 +8,14 @@ import {
   AsyncStorage,
 } from 'react-native';
 import Dimensions from 'Dimensions';
-
+import TimerMixin from 'react-timer-mixin';
 import {AudioRecorder, AudioUtils} from 'react-native-audio';
 
 var RecordButton = require("./RecordButton.js")
 
 
 class What extends Component {
+  mixins: [TimerMixin]
   constructor(){
     super();
     this.state = {
@@ -39,7 +40,7 @@ class What extends Component {
     });
 
     AudioRecorder.onProgress = (data) => {
-      this.setState({currentTime: Math.floor(data.currentTime)});
+      this.setState({currentTime: data.currentTime});
     };
     AudioRecorder.onFinished = (data) => {
       this.setState({finished: data.finished});
@@ -67,6 +68,7 @@ class What extends Component {
   _record() {
     AudioRecorder.startRecording();
     this.setState({recording: true, playing: false});
+    console.log(this.state)
   }
 
  _play() {
@@ -76,11 +78,14 @@ class What extends Component {
     }
     AudioRecorder.playRecording();
     this.setState({playing: true});
+    setTimeout( () => { this.setState({playing: false});}, this.state.currentTime * 1000);
   }
 
   render(){
     if (this.state.recording){
-      var speakerImage = <Image style={styles.speakerImg} source={require('../../assets/img/red-speaker.png')}/>
+      var speakerImage = <Image style={styles.speakerImg} source={require('../../assets/img/input-speaker.png')}/>
+    } else if (this.state.playing){
+      var speakerImage = <Image style={styles.speakerImg} source={require('../../assets/img/output-speaker.png')}/>
     } else {
       var speakerImage = <Image style={styles.speakerImg} source={require('../../assets/img/speaker.png')}/>
     }
