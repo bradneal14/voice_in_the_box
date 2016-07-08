@@ -15,6 +15,71 @@ var RecordButton = require("./RecordButton.js")
 
 
 class What extends Component {
+  constructor(){
+    super();
+    this.state = {
+      currentTime: 0.0,
+      recording: false,
+      stoppedRecording: false,
+      stoppedPlaying: false,
+      playing: false,
+      finished: false,
+    };
+
+  }
+
+  componentDidMount() {
+    let audioPath = AudioUtils.DocumentDirectoryPath + '/test.aac';
+
+    AudioRecorder.prepareRecordingAtPath(audioPath, {
+      SampleRate: 22050,
+      Channels: 1,
+      AudioQuality: "Low",
+      AudioEncoding: "aac"
+    });
+
+    AudioRecorder.onProgress = (data) => {
+      this.setState({currentTime: Math.floor(data.currentTime)});
+    };
+    AudioRecorder.onFinished = (data) => {
+      this.setState({finished: data.finished});
+      console.log(`Finished recording: ${data.finished}`);
+    };
+  }
+  _pause() {
+    if (this.state.recording)
+      AudioRecorder.pauseRecording();
+    else if (this.state.playing) {
+      AudioRecorder.pausePlaying();
+    }
+  }
+
+  _stop() {
+    if (this.state.recording) {
+      AudioRecorder.stopRecording();
+      this.setState({stoppedRecording: true, recording: false});
+    } else if (this.state.playing) {
+      AudioRecorder.stopPlaying();
+      this.setState({playing: false, stoppedPlaying: true});
+    }
+  }
+
+  _record() {
+    console.log("hello");
+    AudioRecorder.startRecording();
+    this.setState({recording: true, playing: false});
+  }
+
+ _play() {
+    if (this.state.recording) {
+      this._stop();
+      this.setState({recording: false});
+    }
+    AudioRecorder.playRecording();
+    this.setState({playing: true});
+  }
+
+
 
   playRecording(){
     console.log("playing recording");
@@ -24,7 +89,7 @@ class What extends Component {
       <View style={styles.contentBox}>
         <View>
           <TouchableHighlight
-          onPress={this._play}
+          onPress={this._play.bind(this)}
           underlayColor='rgba(151, 10, 45, .2)'
           style={styles.speakerButtonBox}>
             <View style={styles.speakerBox}>
@@ -34,7 +99,8 @@ class What extends Component {
         </View>
         <View>
           <TouchableHighlight
-
+          onPressIn={this._record.bind(this)}
+          onPressOut={this._stop.bind(this)}
           underlayColor='rgba(151, 10, 45, .2)'
           style={styles.recordButton}>
             <View style={styles.recordButtonBox}>
