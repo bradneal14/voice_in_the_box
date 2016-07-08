@@ -45,9 +45,8 @@ class What extends Component {
 
 var styles = StyleSheet.create({
   contentBox: {
-    backgroundColor: 'yellow',
     borderWidth: 1,
-    borderColor: 'green',
+    borderTopColor: 'green',
     flex: 5,
     alignItems: 'center',
     justifyContent: 'space-around',

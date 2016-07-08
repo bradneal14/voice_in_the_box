@@ -35,7 +35,7 @@ var styles = StyleSheet.create({
   navigationBox: {
     marginTop: 20,
     // backgroundColor: 'grey',
-    borderWidth: 1,
+    borderWidth: 0,
     borderColor: 'red',
     flex: 1,
     justifyContent: 'center',

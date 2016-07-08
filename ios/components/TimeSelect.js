@@ -15,6 +15,7 @@ class TimeSelect extends Component {
   onDateChange(date){
     this.setState({date: date});
     this.props.passDate(date)
+    this.props.unlock;
   }
   render(){
     return(
@@ -24,6 +25,7 @@ class TimeSelect extends Component {
           mode="time"
           onDateChange={this.onDateChange.bind(this)}
           minuteInterval={1}
+          style={styles.datePicker}
           />
       </View>
     )
@@ -32,8 +34,12 @@ class TimeSelect extends Component {
 
 var styles = StyleSheet.create({
   datePicker:{
-    width: 200,
-    height: 50,
+    width: 150,
+    height: 100,
+    alignSelf: 'center',
+    justifyContent: 'flex-start',
+    marginTop: 0,
+
   }
 })
 
