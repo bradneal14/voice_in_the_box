@@ -3,8 +3,10 @@ import {
   View,
   Text,
   StyleSheet,
-  DatePickerIOS
+  DatePickerIOS,
 } from 'react-native';
+import Dimensions from 'Dimensions';
+
 
 class TimeSelect extends Component {
   constructor(props){
@@ -32,12 +34,15 @@ class TimeSelect extends Component {
   }
 }
 
+var circleWidth = (Dimensions.get("window").width - 90);
+var circleRadius = circleWidth / 2;
+
 var styles = StyleSheet.create({
   datePicker:{
-    width: 150,
+    width: circleWidth - 40,
     height: 100,
     alignSelf: 'center',
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
     marginTop: 0,
 
   }

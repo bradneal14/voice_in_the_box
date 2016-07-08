@@ -64,10 +64,6 @@ class When extends Component {
           </View>
         </View>
 
-        <View style={styles.midContent}>
-            <Text>Hello</Text>
-        </View>
-
 
         <View style={styles.bottomContent}>
             {lockButton}
@@ -78,41 +74,45 @@ class When extends Component {
   }
 };
 
+var circleWidth = (Dimensions.get("window").width - 90);
+var circleRadius = circleWidth / 2
 var styles = StyleSheet.create({
   contentBox: {
     borderWidth: 1,
     borderTopColor: 'green',
+    borderColor: 'rgba(0,0,0,.0)',
     flex: 5,
   },
   timeBoxOuter: {
-    height: 220,
-    width: 220,
-    borderWidth: 1,
+    height: circleWidth,
+    width: circleWidth,
+    borderWidth: 2,
     borderColor: 'white',
     alignItems: 'center',
-    justifyContent: 'flex-start',
-    borderRadius: 220,
+    justifyContent: 'center',
+    borderRadius: circleRadius,
     marginTop: 0,
-    flexDirection: 'column',
+    flexDirection: 'row',
     // backgroundColor: 'rgba(250, 250, 250, .6)'
     backgroundColor: 'grey'
   },
   topContent: {
     flex: 3,
-    borderWidth: 1,
+    borderWidth: 0,
     borderColor: 'pink',
     alignItems: 'center',
-    justifyContent: 'flex-start'
+    justifyContent: 'flex-start',
+    paddingTop: 10,
   },
   midContent: {
     flex: 1,
-    borderWidth: 2,
+    borderWidth: 0,
     borderColor: 'green',
     alignItems: 'center',
   },
   bottomContent: {
     flex: 2,
-    borderWidth: 3,
+    borderWidth: 0,
     borderColor: 'white',
     alignItems: 'center',
     justifyContent: 'center'
@@ -145,12 +145,12 @@ var styles = StyleSheet.create({
   },
   saveButtonTouch:{
     height: 70,
-    width: 220,
+    width: circleWidth,
     marginBottom: 0,
   },
   saveButtonBoxInner: {
     height: 70,
-    width: 220,
+    width: circleWidth,
     borderWidth: 2,
     borderColor: 'green',
     alignItems: 'center',
@@ -162,7 +162,7 @@ var styles = StyleSheet.create({
   },
   yesLockButtonBox: {
     height: 70,
-    width: 220,
+    width: circleWidth,
     borderWidth: 0,
     borderColor: 'green',
     alignItems: 'center',

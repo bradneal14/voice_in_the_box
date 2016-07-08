@@ -118,13 +118,11 @@ class What extends Component {
               {speakerImage}
             </View>
           </TouchableHighlight>
-          <View>
+          <View style={styles.deleteButton}>
             {deleteButton}
           </View>
         </View>
-        <View style={styles.midContent}>
-          <Text>This is middle content</Text>
-        </View>
+
         <View style={styles.bottomContent}>
           <TouchableHighlight
           onPressIn={this._record.bind(this)}
@@ -143,21 +141,30 @@ class What extends Component {
 
 }
 
+var circleWidth = (Dimensions.get("window").width - 90);
+var circleRadius = circleWidth / 2;
+
+
 var styles = StyleSheet.create({
   contentBox: {
     borderWidth:1,
     borderTopColor: 'green',
+    borderColor: 'rgba(0,0,0,.0)',
     flex: 5,
   },
   speakerImg: {
-    height: 160,
-    width: 160,
+    height: circleWidth - 80,
+    width: circleWidth - 80,
   },
-
+  speakerButtonBox:{
+    height: circleWidth,
+    width: circleWidth,
+    borderRadius: circleRadius,
+  },
   speakerBox: {
-    height: 220,
-    width: 220,
-    borderRadius: 110,
+    height: circleWidth,
+    width: circleWidth,
+    borderRadius: circleRadius,
     borderColor: 'grey',
     borderWidth:2,
     alignItems: 'center',
@@ -172,7 +179,7 @@ var styles = StyleSheet.create({
   },
   recordButtonBox: {
     height: 70,
-    width: 220,
+    width: circleWidth,
     borderWidth:2,
     borderColor: 'green',
     marginBottom: 0,
@@ -184,7 +191,7 @@ var styles = StyleSheet.create({
   },
   recordButton: {
     height: 70,
-    width: 220,
+    width: circleWidth,
     marginBottom: 0,
   },
   recordButtonSymbol:{
@@ -197,11 +204,11 @@ var styles = StyleSheet.create({
   deleteButton: {
     alignSelf: 'center',
     justifyContent: 'flex-end',
-    padding: 5
+    padding: 5,
   },
   deleteText: {
     fontFamily: 'AvenirNext-Italic',
-    fontSize: 20,
+    fontSize: circleRadius / 10,
   },
   hidden: {
     color: 'rgba(151, 10, 45, 0)',
@@ -211,20 +218,21 @@ var styles = StyleSheet.create({
   },
   topContent: {
     flex: 3,
-    borderWidth: 1,
+    borderWidth: 0,
     borderColor: 'pink',
     alignItems: 'center',
-    justifyContent: 'flex-start'
+    justifyContent: 'flex-start',
+    paddingTop: 10,
   },
   midContent: {
     flex: 1,
-    borderWidth: 2,
+    borderWidth: 1,
     borderColor: 'green',
     alignItems: 'center'
   },
   bottomContent: {
     flex: 2,
-    borderWidth: 3,
+    borderWidth: 0,
     borderColor: 'white',
     alignItems: 'center',
     justifyContent: 'center'
