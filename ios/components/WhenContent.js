@@ -5,14 +5,17 @@ import {
   View,
   Image,
   TouchableHighlight,
+  AsyncStorage,
 } from 'react-native';
+import Dimensions from 'Dimensions';
 
 var TimeSelect = require('./TimeSelect.js')
 
 class When extends Component {
   constructor(){
     super();
-    this.state = {chosenDate: "none yet", saved: false}
+    let dateObj = new Date();
+    this.state = {chosenDate: dateObj.toString(), saved: false}
   }
   saveAlarm(){
     console.log("alarm saved");
@@ -52,34 +55,36 @@ class When extends Component {
     return (
       <View style={styles.contentBox}>
 
-        <View style={styles.timeBoxOuter}>
-          <TimeSelect
-            passDate={this.recieveDate.bind(this)}
-            unlock={this.unlock.bind(this)}
-            style={styles.picker}/>
+        <View style={styles.topContent}>
+          <View style={styles.timeBoxOuter}>
+            <TimeSelect
+              passDate={this.recieveDate.bind(this)}
+              unlock={this.unlock.bind(this)}
+              />
+          </View>
         </View>
 
-        <View style={styles.optionsBoxOuter}>
-          <Text>{this.state.chosenDate.toString()}</Text>
-          <Text>{this.state.saved.toString()}</Text>
+        <View style={styles.midContent}>
+            <Text>{(Dimensions.get("window").width) / 7}</Text>
+            <Text>{this.state.saved.toString()}</Text>
+            <Text>{this.state.chosenDate.toString()}</Text>
         </View>
 
-        <View>
-          {lockButton}
+
+        <View style={styles.bottomContent}>
+            {lockButton}
         </View>
 
       </View>
     )
   }
-}
+};
 
 var styles = StyleSheet.create({
   contentBox: {
     borderWidth: 1,
     borderTopColor: 'green',
     flex: 5,
-    alignItems: 'center',
-    justifyContent: 'space-between',
   },
   timeBoxOuter: {
     height: 220,
@@ -89,10 +94,30 @@ var styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start',
     borderRadius: 220,
-    marginTop: 30,
+    marginTop: 0,
     flexDirection: 'column',
     // backgroundColor: 'rgba(250, 250, 250, .6)'
     backgroundColor: 'grey'
+  },
+  topContent: {
+    flex: 3,
+    borderWidth: 1,
+    borderColor: 'pink',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  midContent: {
+    flex: 0,
+    borderWidth: 2,
+    borderColor: 'green',
+    alignItems: 'center'
+  },
+  bottomContent: {
+    flex: 2,
+    borderWidth: 3,
+    borderColor: 'white',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   optionsBoxOuter: {
     width: 250,
@@ -108,6 +133,12 @@ var styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  buttonBoxOuter:{
+    borderColor: 'purple',
+    borderWidth: 0,
+    justifyContent: 'center',
+    // flex: 2
+  },
   saveButtonText: {
     color: '#003366',
     fontFamily: 'Avenir-MediumOblique',
@@ -117,10 +148,7 @@ var styles = StyleSheet.create({
   saveButtonTouch:{
     height: 70,
     width: 220,
-    marginBottom: 50,
-  },
-  picker: {
-    alignSelf: 'flex-start'
+    marginBottom: 0,
   },
   saveButtonBoxInner: {
     height: 70,
@@ -129,10 +157,10 @@ var styles = StyleSheet.create({
     borderColor: 'green',
     alignItems: 'center',
     justifyContent: "center",
-    flexDirection: 'row',
+    flexDirection: 'column',
     backgroundColor: 'grey',
     borderRadius: 10,
-    marginTop: -18,
+    marginTop: -0,
   },
   yesLockButtonBox: {
     height: 70,

@@ -4,12 +4,18 @@ import {
   Text,
   View,
   Image,
-  TouchableHighlight
+  TouchableHighlight,
+  AsyncStorage,
 } from 'react-native';
+import Dimensions from 'Dimensions';
+
+import {AudioRecorder, AudioUtils} from 'react-native-audio';
 
 var RecordButton = require("./RecordButton.js")
 
+
 class What extends Component {
+
   playRecording(){
     console.log("playing recording");
   }
@@ -18,7 +24,7 @@ class What extends Component {
       <View style={styles.contentBox}>
         <View>
           <TouchableHighlight
-          onPress={this.playRecording}
+          onPress={this._play}
           underlayColor='rgba(151, 10, 45, .2)'
           style={styles.speakerButtonBox}>
             <View style={styles.speakerBox}>
@@ -28,7 +34,7 @@ class What extends Component {
         </View>
         <View>
           <TouchableHighlight
-          onPress={this.playRecording}
+
           underlayColor='rgba(151, 10, 45, .2)'
           style={styles.recordButton}>
             <View style={styles.recordButtonBox}>
@@ -54,6 +60,21 @@ var styles = StyleSheet.create({
   speakerImg: {
     height: 160,
     width: 160,
+  },
+  topContent: {
+    flex: 3,
+    borderWidth: 2,
+    borderColor: 'pink'
+  },
+  midContent: {
+    flex: 1,
+    borderWidth: 2,
+    borderColor: 'blue'
+  },
+  bottomContent: {
+    flex: 2,
+    borderWidth: 2,
+    borderColor: 'purple'
   },
   speakerBox: {
     height: 200,
