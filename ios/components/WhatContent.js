@@ -65,7 +65,6 @@ class What extends Component {
   }
 
   _record() {
-    console.log("hello");
     AudioRecorder.startRecording();
     this.setState({recording: true, playing: false});
   }
@@ -79,12 +78,12 @@ class What extends Component {
     this.setState({playing: true});
   }
 
-
-
-  playRecording(){
-    console.log("playing recording");
-  }
   render(){
+    if (this.state.recording){
+      var speakerImage = <Image style={styles.speakerImg} source={require('../../assets/img/red-speaker.png')}/>
+    } else {
+      var speakerImage = <Image style={styles.speakerImg} source={require('../../assets/img/speaker.png')}/>
+    }
     return(
       <View style={styles.contentBox}>
         <View>
@@ -93,7 +92,7 @@ class What extends Component {
           underlayColor='rgba(151, 10, 45, .2)'
           style={styles.speakerButtonBox}>
             <View style={styles.speakerBox}>
-              <Image style={styles.speakerImg} source={require('../../assets/img/speaker.png')}/>
+              {speakerImage}
             </View>
           </TouchableHighlight>
         </View>
@@ -104,7 +103,7 @@ class What extends Component {
           underlayColor='rgba(151, 10, 45, .2)'
           style={styles.recordButton}>
             <View style={styles.recordButtonBox}>
-              <Text style={styles.recordButtonText}>Record</Text>
+              <Text style={styles.recordButtonText}>Record!</Text>
               <View style={styles.recordButtonSymbol}/>
             </View>
           </TouchableHighlight>
@@ -161,7 +160,8 @@ var styles = StyleSheet.create({
   recordButtonText: {
     color: '#003366',
     fontFamily: 'Avenir-MediumOblique',
-    fontSize: 38
+    fontSize: 38,
+    paddingRight: 4,
   },
   recordButtonBox: {
     height: 70,
@@ -173,7 +173,7 @@ var styles = StyleSheet.create({
     justifyContent: "center",
     flexDirection: 'row',
     backgroundColor: 'grey',
-    borderRadius: 10
+    borderRadius: 10,
   },
   recordButton: {
     height: 70,
@@ -185,7 +185,7 @@ var styles = StyleSheet.create({
     width: 30,
     borderRadius: 15,
     backgroundColor: '#ff3333',
-    margin: 18
+    margin: 13
   }
 });
 
