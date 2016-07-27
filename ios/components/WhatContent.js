@@ -29,6 +29,9 @@ class What extends Component {
     };
 
   }
+  logProps(){
+    console.log(this.state)
+  }
 
   componentDidMount() {
     let audioPath = AudioUtils.DocumentDirectoryPath + '/test.aac';
@@ -97,15 +100,10 @@ class What extends Component {
     } else {
       var speakerImage = <Image style={styles.speakerImg} source={require('../../assets/img/speaker.png')}/>
     }
-    if (this.state.stoppedRecording){
-      var deleteButton = <TouchableHighlight
-        onPress={this.test.bind(this)}
-        underlayColor='rgba(151, 10, 45, .2)'
-        style={styles.deleteButton}>
-          <Text style={styles.deleteText}>DELETE RECORDING</Text>
-        </TouchableHighlight>
+    if (!this.state.stoppedRecording){
+      var recordText = <Text style={styles.recordButtonText}>Record</Text>
     } else {
-      var deleteButton = <Text style={styles.hidden}>DELETE RECORDING</Text>
+      var recordText = <Text style={styles.recordButtonText}>Re-Record</Text>
     }
     return(
       <View style={styles.contentBox}>
@@ -118,9 +116,7 @@ class What extends Component {
               {speakerImage}
             </View>
           </TouchableHighlight>
-          <View style={styles.deleteButton}>
-            {deleteButton}
-          </View>
+
         </View>
 
         <View style={styles.bottomContent}>
@@ -130,18 +126,26 @@ class What extends Component {
           underlayColor='rgba(151, 10, 45, .2)'
           style={styles.recordButton}>
             <View style={styles.recordButtonBox}>
-              <Text style={styles.recordButtonText}>Record</Text>
+              {recordText}
               <View style={styles.recordButtonSymbol}/>
             </View>
           </TouchableHighlight>
         </View>
+
+        <TouchableHighlight
+        onPress={this.props.testOne}
+        underlayColor='rgba(151, 10, 45, .2)'>
+          <View>
+            <Text>TEST IT</Text>
+          </View>
+        </TouchableHighlight>
       </View>
     )
   }
 
 }
 
-var circleWidth = (Dimensions.get("window").width - 90);
+var circleWidth = (Dimensions.get("window").width - 80);
 var circleRadius = circleWidth / 2;
 
 
@@ -199,7 +203,7 @@ var styles = StyleSheet.create({
     width: 30,
     borderRadius: 15,
     backgroundColor: '#ff3333',
-    margin: 13
+    margin: 6
   },
   deleteButton: {
     alignSelf: 'center',
@@ -208,7 +212,7 @@ var styles = StyleSheet.create({
   },
   deleteText: {
     fontFamily: 'AvenirNext-Italic',
-    fontSize: circleRadius / 10,
+    fontSize: circleRadius / 9,
   },
   hidden: {
     color: 'rgba(151, 10, 45, 0)',

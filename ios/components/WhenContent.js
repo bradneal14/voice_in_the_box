@@ -1,3 +1,4 @@
+"use strict"
 import React, {Component} from 'react';
 import {
   StyleSheet,
@@ -8,22 +9,61 @@ import {
   AsyncStorage,
 } from 'react-native';
 import Dimensions from 'Dimensions';
-
-var TimeSelect = require('./TimeSelect.js')
-
+var TimeSelect = require('./TimeSelect.js');
+var What = require('./WhatContent.js')
+var storageKey = "AlarmAppStorageKey"
+var timer;
 class When extends Component {
   constructor(){
     super();
     let dateObj = new Date();
-    this.state = {chosenDate: dateObj.toString(), saved: false}
+    this.state = {chosenDate: dateObj, saved: false, other: 17}
+    console.log(this.state, "initial state")
+  }
+  scheduleChecks(){
+    var that = this;
+    timer = window.setInterval(function(){
+      console.log("intervals")
+      console.log(What)
+      that.checkForAlarm();
+    }, 4000);
+  }
+  cancelChecks(){
+    console.log("in cancel checks")
+    window.clearTimeout(timer);
+  }
+  checkForAlarm(){
+    var now = new Date
+    var hoursNow = now.getHours();
+    var minutesNow = now.getMinutes();
+    var secondsNow = now.getSeconds();
+    var alarmHours = this.state.hours
+    var alarmMinutes = this.state.minutes
+    if (hoursNow === alarmHours && minutesNow === alarmMinutes){
+      console.log("WOOO THIS IS AN ALARM")
+      this.cancelChecks();
+    }
   }
   saveAlarm(){
-    console.log("alarm saved");
-    this.setState({saved: true})
+    console.log("alarm saved and we just saved to async");
+    var dateToParse = this.state.chosenDate
+    var hours = dateToParse.getHours();
+    var minutes = dateToParse.getMinutes();
+    var seconds = dateToParse.getSeconds();
+    this.setState({saved: true, minutes: minutes, hours: hours, seconds: seconds}, () => console.log("specific time set", hours, minutes));
+    AsyncStorage.setItem(storageKey, this.state.chosenDate);
   }
   recieveDate(date){
     this.setState({chosenDate: date});
     this.unlock();
+  }
+  getAsync(){
+    console.log("in get async");
+    AsyncStorage.getItem(storageKey).then((value) => {this.setState({other: value});}).done()
+  }
+  logState() {
+    console.log(this.state)
+    this.scheduleChecks();
   }
   unlock(){
     if (this.state.saved === true){
@@ -68,6 +108,22 @@ class When extends Component {
         <View style={styles.bottomContent}>
             {lockButton}
         </View>
+
+        <TouchableHighlight
+        onPress={this.getAsync.bind(this)}
+        underlayColor='rgba(151, 10, 45, .2)'>
+          <View>
+            <Text>GET ASYNC</Text>
+          </View>
+        </TouchableHighlight>
+
+        <TouchableHighlight
+        onPress={this.logState.bind(this)}
+        underlayColor='rgba(151, 10, 45, .2)'>
+          <View>
+            <Text>LOG STATE</Text>
+          </View>
+        </TouchableHighlight>
 
       </View>
     )

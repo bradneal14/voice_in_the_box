@@ -23,7 +23,7 @@ class App extends Component {
     }
   }
   render() {
-    let display = this.state.tab==="when" ? <When/> : <What/>;
+    let display = this.state.tab==="when" ? <When test={this.props.test}/> : <What testOne={this.props.test}/>;
     return (
       <View style={styles.fullBack}>
         <Navbar onClick={this.toggleContent.bind(this)} tab={this.state.tab} />

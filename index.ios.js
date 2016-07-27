@@ -5,12 +5,12 @@ import {
   Text
 } from 'react-native';
 
-var App = require("./ios/components/App.js")
+var Dashboard = require("./ios/components/Dashboard.js")
 
 class voiceInTheBox extends Component {
   render() {
     return (
-      <App/>
+      <Dashboard/>
     );
   }
 }
