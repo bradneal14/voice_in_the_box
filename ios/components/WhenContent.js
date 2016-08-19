@@ -3,16 +3,39 @@ import React, {Component} from 'react';
 import {
   StyleSheet,
   Text,
+  AlertIOS,
+  PushNotificationIOS,
   View,
   Image,
   TouchableHighlight,
   AsyncStorage,
 } from 'react-native';
 import Dimensions from 'Dimensions';
+var PushNotification = require('react-native-push-notification');
 var TimeSelect = require('./TimeSelect.js');
 var What = require('./WhatContent.js')
 var storageKey = "AlarmAppStorageKey"
 var timer;
+
+PushNotification.configure({
+    // (optional) Called when Token is generated (iOS and Android)
+    onRegister: function(token) {
+        console.log( 'TOKEN:', token );
+    },
+    // (required) Called when a remote or local notification is opened or received
+    onNotification: function(notification) {
+        console.log( 'NOTIFICATION:', notification );
+    },
+    senderID: "YOUR GCM SENDER ID",
+    permissions: {
+        alert: true,
+        badge: true,
+        sound: true
+    },
+    popInitialNotification: true,
+    requestPermissions: true,
+});
+
 class When extends Component {
   constructor(){
     super();
@@ -20,29 +43,63 @@ class When extends Component {
     this.state = {chosenDate: dateObj, saved: false, other: 17}
     console.log(this.state, "initial state")
   }
-  scheduleChecks(){
-    var that = this;
-    timer = window.setInterval(function(){
-      console.log("intervals")
-      console.log(What)
-      that.checkForAlarm();
-    }, 4000);
+  // scheduleChecks(){
+  //   var that = this;
+  //   timer = window.setInterval(function(){
+  //     console.log("intervals")
+  //     console.log(What)
+  //     that.checkForAlarm();
+  //   }, 4000);
+  // }
+  // cancelChecks(){
+  //   console.log("in cancel checks")
+  //   window.clearTimeout(timer);
+  // }
+  // checkForAlarm(){
+  //   var now = new Date
+  //   var hoursNow = now.getHours();
+  //   var minutesNow = now.getMinutes();
+  //   var secondsNow = now.getSeconds();
+  //   var alarmHours = this.state.hours
+  //   var alarmMinutes = this.state.minutes
+  //   if (hoursNow === alarmHours && minutesNow === alarmMinutes){
+  //     console.log("WOOO THIS IS AN ALARM")
+  //     this.cancelChecks();
+  //   }
+  // }
+  componentWillMount() {
+   // Add listener for push notifications
+     PushNotificationIOS.addEventListener('notification', this._onNotification);
+     // Add listener for local notifications
+     PushNotificationIOS.addEventListener('localNotification', this._onLocalNotification);
   }
-  cancelChecks(){
-    console.log("in cancel checks")
-    window.clearTimeout(timer);
+  componentWillUnmount() {
+    // Remove listener for push notifications
+    PushNotificationIOS.removeEventListener('notification', this._onNotification);
+    // Remove listener for local notifications
+    PushNotificationIOS.removeEventListener('localNotification', this._onLocalNotification);
   }
-  checkForAlarm(){
-    var now = new Date
-    var hoursNow = now.getHours();
-    var minutesNow = now.getMinutes();
-    var secondsNow = now.getSeconds();
-    var alarmHours = this.state.hours
-    var alarmMinutes = this.state.minutes
-    if (hoursNow === alarmHours && minutesNow === alarmMinutes){
-      console.log("WOOO THIS IS AN ALARM")
-      this.cancelChecks();
-    }
+  sendPush(){
+    // require('RCTDeviceEventEmitter').emit('localNotificationReceived', {
+    //   aps: {
+    //     alert: 'Sample local notification',
+    //     badge: '+1',
+    //     sound: 'default',
+    //     category: 'REACT_NATIVE'
+    //   },
+    // });
+    // var details = {
+    //   fireDate: Date.now() + 10000,
+    //   alertBody: "testing testing 124"
+    // }
+    var sound = require("../../assets/audio/Taylor.mp3")
+    console.log("push should be sent")
+    PushNotification.localNotificationSchedule({
+      message: "WAKE UP MOFO", // (required)
+      date: new Date(Date.now() + (5 * 1000)),
+      soundName: sound
+       // in 60 secs
+    });
   }
   saveAlarm(){
     console.log("alarm saved and we just saved to async");
@@ -50,8 +107,30 @@ class When extends Component {
     var hours = dateToParse.getHours();
     var minutes = dateToParse.getMinutes();
     var seconds = dateToParse.getSeconds();
-    this.setState({saved: true, minutes: minutes, hours: hours, seconds: seconds}, () => console.log("specific time set", hours, minutes));
-    AsyncStorage.setItem(storageKey, this.state.chosenDate);
+    this.props.time(hours, minutes);
+    this.setState({saved: true, minutes: minutes, hours: hours}, () => console.log("specific time set", hours, minutes));
+
+  }
+  _onNotification(notification) {
+    AlertIOS.alert(
+      'Push Notification Received',
+      'Alert message: ' + notification.getMessage(),
+      [{
+        text: 'Dismiss',
+        onPress: null,
+      }]
+    );
+  }
+
+  _onLocalNotification(notification){
+    AlertIOS.alert(
+      'Local Notification Received',
+      'Alert message: ' + notification.getMessage(),
+      [{
+        text: 'Dismiss',
+        onPress: null,
+      }]
+    );
   }
   recieveDate(date){
     this.setState({chosenDate: date});
@@ -59,9 +138,10 @@ class When extends Component {
   }
   getAsync(){
     console.log("in get async");
-    AsyncStorage.getItem(storageKey).then((value) => {this.setState({other: value});}).done()
+    // AsyncStorage.getItem(storageKey).then((value) => {this.setState({other: value});}).done()
   }
   logState() {
+    console.log("log state actually turns on the alarm/intervals")
     console.log(this.state)
     this.scheduleChecks();
   }
@@ -74,7 +154,7 @@ class When extends Component {
     if (this.state.saved === false){
       var lockButton =
         <TouchableHighlight
-        onPress={this.saveAlarm.bind(this)}
+        onPress={this.sendPush.bind(this)}
         underlayColor='rgba(151, 10, 45, .2)'
         style={styles.saveButtonTouch}
         >

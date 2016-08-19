@@ -10,14 +10,14 @@ import {
 import Dimensions from 'Dimensions';
 import TimerMixin from 'react-timer-mixin';
 import {AudioRecorder, AudioUtils} from 'react-native-audio';
-
+var recordTimer;
+var elapsedTime = 0;
 var RecordButton = require("./RecordButton.js")
-
 
 class What extends Component {
   mixins: [TimerMixin]
-  constructor(){
-    super();
+  constructor(props){
+    super(props);
     this.state = {
       currentTime: 0.0,
       recording: false,
@@ -27,63 +27,92 @@ class What extends Component {
       finished: false,
       done: false,
     };
-
   }
   logProps(){
     console.log(this.state)
   }
-
-  componentDidMount() {
-    let audioPath = AudioUtils.DocumentDirectoryPath + '/test.aac';
-
-    AudioRecorder.prepareRecordingAtPath(audioPath, {
-      SampleRate: 22050,
-      Channels: 1,
-      AudioQuality: "Low",
-      AudioEncoding: "aac"
-    });
-
-    AudioRecorder.onProgress = (data) => {
-      this.setState({currentTime: data.currentTime});
-    };
-    AudioRecorder.onFinished = (data) => {
-      this.setState({finished: data.finished});
-      this.setState({done: true});
-      console.log(`Finished recording: ${data.finished}`);
-    };
+  //OLD "COMPONENT WILL MOUNT"
+  // console.log(this.state.currentTime, "current time on mount")
+  // let audioPath = AudioUtils.DocumentDirectoryPath + '/test.aac';
+  //
+  // AudioRecorder.prepareRecordingAtPath(audioPath, {
+  //   SampleRate: 22050,
+  //   Channels: 1,
+  //   AudioQuality: "Low",
+  //   AudioEncoding: "aac"
+  // });
+  //
+  // AudioRecorder.onProgress = (data) => {
+  //   this.setState({currentTime: data.currentTime});
+  // };
+  // AudioRecorder.onFinished = (data) => {
+  //   this.setState({finished: data.finished});
+  //   this.setState({done: true});
+  //   console.log(`Finished recording: ${data.finished}`);
+  // };
+  componentDidMount(){
+    if (this.props.data){
+      var dashboardState = this.props.data
+      var currentTime = this.props.data.currentTime;
+      var stoppedRecording = this.props.data.stoppedRecording
+      this.setState({currentTime: currentTime, stoppedRecording: stoppedRecording})
+    }
+    // AsyncStorage.getItem("currentTime").then((value) => this.setState({currentTime: parseInt(value)})).done();
+    // AsyncStorage.getItem("stoppedRecording").then((value) => this.setState({stoppedRecording: Boolean(value)})).done();
   }
-  _pause() {
-    if (this.state.recording)
-      AudioRecorder.pauseRecording();
-    else if (this.state.playing) {
-      AudioRecorder.pausePlaying();
+  componentWillUnmount(){
+    if (this.state.stoppedRecording){
+      console.log("we should be saving here")
+      var currentTime = this.state.currentTime;
+      var stoppedRecording = true;
+      // AsyncStorage.setItem("currentTime", currentTime.toString());
+      // AsyncStorage.setItem("stoppedRecording", stoppedRecording.toString());
     }
   }
 
   _stop() {
+    this.props.stop();
     if (this.state.recording) {
-      AudioRecorder.stopRecording();
       this.setState({stoppedRecording: true, recording: false});
+      this.endTimer();
     } else if (this.state.playing) {
-      AudioRecorder.stopPlaying();
       this.setState({playing: false, stoppedPlaying: true});
     }
   }
-
-  _record() {
-    AudioRecorder.startRecording();
-    this.setState({recording: true, playing: false});
-    console.log(AudioUtils.DocumentDirectoryPath)
+  startTimer(){
+    recordTimer = window.setInterval(function(){
+      console.log(elapsedTime)
+      elapsedTime+=.100000
+    }, 100);
+  }
+  endTimer(){
+    elapsedTime *= 1.101
+    elapsedTime += .5
+    console.log(elapsedTime, "elapsed time")
+    window.clearInterval(recordTimer);
+    this.setState({currentTime: elapsedTime})
+    elapsedTime = 0;
   }
 
- _play() {
-    if (this.state.recording) {
-      this._stop();
-      this.setState({recording: false});
+  _record() {
+    elapsedTime = 0;
+    this.props.record();
+    this.setState({recording: true, playing: false});
+    this.startTimer();
+  }
+  _play() {
+    if (this.state.stoppedRecording === true){
+      console.log(this.state.currentTime)
+      this.props.play();
+      if (this.state.recording) {
+        this._stop();
+        this.setState({recording: false});
+      }
+      console.log(this.state.currentTime)
+      this.setState({playing: true}, () => {
+        setTimeout( () => { this.setState({playing: false});}, this.state.currentTime * 1000);
+      });
     }
-    AudioRecorder.playRecording();
-    this.setState({playing: true});
-    setTimeout( () => { this.setState({playing: false});}, this.state.currentTime * 1000);
   }
   test(){
     this.setState({stoppedRecording: false})
@@ -110,7 +139,7 @@ class What extends Component {
         <View style={styles.topContent}>
           <TouchableHighlight
           onPress={this._play.bind(this)}
-          underlayColor='rgba(151, 10, 45, .2)'
+          underlayColor='rgba(151, 10, 45, .0)'
           style={styles.speakerButtonBox}>
             <View style={styles.speakerBox}>
               {speakerImage}

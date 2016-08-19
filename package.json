@@ -9,6 +9,7 @@
     "react": "15.2.0",
     "react-native": "^0.29.0",
     "react-native-audio": "^1.2.1",
+    "react-native-sound": "^0.8.3",
     "react-timer-mixin": "^0.13.3"
   }
 }
